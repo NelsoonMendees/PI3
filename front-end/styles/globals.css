@@ -1,0 +1,72 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+
+
+
+
+*{
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+:root{
+  --white: #fff;
+  --black: #000;
+
+  --dark-900: #101026;
+  --dark-700: #1D1D2E;
+
+  --gray: #8A8A8A;
+  --green-900: #00ff88;
+  --red-900: #FF3F48;
+  --blue: #83BED2;
+  --gold-900:#D1BB18;
+  --bg-color: #04044c;
+
+}
+
+button{
+  cursor: pointer;
+
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+body{
+  background-color: var(--bg-color);
+  overflow-x: hidden;
+  
+}
+
+li{
+  list-style: none;
+}
+
+body, input, textarea, select, button{
+  font-family: 'Noto Sans', sans-serif;
+}
+
+@media(max-width:720px){
+  html{
+    font-size: 87.5%;
+    overflow-x: hidden;
+  }
+  body{
+    overflow-x: hidden;
+  }
+}
+
+@media(max-width:1080px){
+  html{
+    font-size: 93.75%;
+    overflow-x: hidden;
+  }
+  body{
+    overflow-x: hidden;
+  }
+}

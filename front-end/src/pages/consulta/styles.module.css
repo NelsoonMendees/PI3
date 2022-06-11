@@ -1,0 +1,43 @@
+.title{
+    margin-top: 10px;
+    text-align: center;
+    color: var(--gold-900)
+}
+
+.tabela{
+    max-width: 80vw;
+    margin: 2vw 8vw;
+}
+
+.tabela tr{
+    max-width: 80vw;
+    text-align: center;
+    color: #f0ffffde;
+}
+
+.tabela td{
+    max-width: 80vw;
+    color: #f0ffffde;
+}
+
+.tabela th{
+    max-width: 50vw;
+}
+
+.buttonsControl{
+    margin-left: 1rem;
+}
+
+.buttonsControl button{
+    width: 80px;
+}
+
+.formControl{
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 737px) {
+    .buttonsControl{
+        margin-bottom: 1rem;
+    }
+}
