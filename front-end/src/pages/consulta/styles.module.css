@@ -32,6 +32,16 @@
     width: 80px;
 }
 
+.btnControl{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn{
+    margin: 5px 5px;
+    width:100px;
+}
+
 .formControl{
     margin-bottom: 10px;
 }

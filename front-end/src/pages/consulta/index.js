@@ -187,12 +187,12 @@ export default class Clientes extends React.Component {
                                         <Form.Control className={styles.formControl} placeholder="Bairro" type="text" value={this.state.bairro} onChange={this.atualizaBairro} />
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Button variant="secondary" onClick={this.fecharModal}>
-                                        Close
+                                <Row className={styles.btnControl}>
+                                    <Button className={styles.btn} variant="secondary" onClick={this.fecharModal}>
+                                        Cancelar
                                     </Button>
-                                    <Button variant="primary" type="submit">
-                                        Save Changes
+                                    <Button className={styles.btn} variant="primary" type="submit">
+                                        Salvar
                                     </Button>
                                 </Row>
                             </Form>
