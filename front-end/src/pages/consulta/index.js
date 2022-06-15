@@ -105,7 +105,7 @@ export default class Clientes extends React.Component {
 
     editarCliente = (event) => {
         const body = {
-            cpf: this.state.cpf,
+            cpf: this.state.cpf.toString(),
             telefone: this.state.telefone,
             nome: this.state.nome,
             numero: this.state.numero,
@@ -175,7 +175,7 @@ export default class Clientes extends React.Component {
                                     </Col>
                                     <Col xs={4}>
                                         <Form.Label>CPF</Form.Label>
-                                        <Form.Control className={styles.formControl} placeholder="CPF" type="text" value={this.state.cpf} onChange={this.atualizaCpf} required />
+                                        <Form.Control className={styles.formControl} readOnly placeholder="CPF" type="text" maxLength={11} value={this.state.cpf} onChange={this.atualizaCpf} required />
                                     </Col>
                                     <Col xs={8}>
                                         <Form.Label>Email</Form.Label>
@@ -183,11 +183,11 @@ export default class Clientes extends React.Component {
                                     </Col>
                                     <Col xs={4}>
                                         <Form.Label>Telefone</Form.Label>
-                                        <Form.Control className={styles.formControl} placeholder="Telefone" type="text" value={this.state.telefone} onChange={this.atualizaTelefone} required />
+                                        <Form.Control className={styles.formControl} placeholder="Telefone" maxLength={11} type="text" value={this.state.telefone} onChange={this.atualizaTelefone} required />
                                     </Col>
                                     <Col xs={4}>
                                         <Form.Label>CEP</Form.Label>
-                                        <Form.Control className={styles.formControl} placeholder="CEP" type="text" value={this.state.cep} onChange={this.atualizaCep} required />
+                                        <Form.Control className={styles.formControl} placeholder="CEP" type="text" maxLength={8} value={this.state.cep} onChange={this.atualizaCep} required />
                                     </Col>
                                     <Col xs={3}>
                                         <Form.Label>Estado</Form.Label>

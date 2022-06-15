@@ -48,33 +48,33 @@ export default class Agenda extends React.Component {
 
     getAgendamentoId = (id) => {
         api.get('/api/v1/id/' + id).then(response => response.data[0])
-        .then(agendamento => {
-            this.setState({
-                horario: agendamento.horario,
-                date: agendamento.data,
-                servicoPet: agendamento.servicos,
-                nomePet: agendamento.nome_pet,
-                agendamentoId: agendamento.agendamento_id
+            .then(agendamento => {
+                this.setState({
+                    horario: agendamento.horario,
+                    date: agendamento.data,
+                    servicoPet: agendamento.servicos,
+                    nomePet: agendamento.nome_pet,
+                    agendamentoId: agendamento.agendamento_id
+                })
+                this.abrirModalPatch()
             })
-            this.abrirModalPatch()
+    }
+
+    editAgendamento = (event) => {
+        const body = {
+            horario: this.state.horario,
+            data: moment(this.state.date).format('YYYY-MM-DD'),
+            servicos: this.state.servicoPet,
+            nome_pet: this.state.nomePet
+        }
+
+        api.put('/api/v1/id/' + this.state.agendamentoId, body).then(response => {
+            toast.success('Agendamento Atualizado!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
+            this.getAgendamentoDate();
+        }).catch(err => {
+            toast.error('Algo deu errado!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
         })
     }
-
-editAgendamento = (event) => {
-    const body = {
-        horario: this.state.horario,
-        data: moment(this.state.date).format('YYYY-MM-DD'),
-        servicos: this.state.servicoPet,
-        nome_pet: this.state.nomePet
-    }
-
-    api.put('/api/v1/id/' + this.state.agendamentoId, body).then(response => {
-        toast.success('Agendamento Atualizado!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
-        this.getAgendamentoDate();
-    }).catch(err => {
-        toast.error('Algo deu errado!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
-    })
-}
 
     deleteAgendamento = (id) => {
         api.delete('/api/v1/agendamento/' + id).then(res => {
@@ -83,6 +83,7 @@ editAgendamento = (event) => {
         }).catch(err => {
             toast.error('Algo deu errado!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
         })
+
     }
 
     getAgendamentoDate = () => {
@@ -140,7 +141,7 @@ editAgendamento = (event) => {
         }
         this.editAgendamento(event);
         this.setState({ validated: true });
-        this.fecharModal();
+        this.fecharModalDois();
     };
 
 
@@ -236,8 +237,8 @@ editAgendamento = (event) => {
                                         <td>{agendaDois.servicos}</td>
                                         <td>{agendaDois.horario}</td>
                                         <td className={styles.buttonsControl}>
-                                            <Button className={styles.buttonsControl} onClick={() =>this.getAgendamentoId(agendaDois.agendamento_id)} variant="primary">Editar</Button>
-                                            <Button className={styles.buttonsControl} onClick={() =>this.deleteAgendamento(agendaDois.agendamento_id)} variant="danger">Deletar</Button>
+                                            <Button className={styles.buttonsControl} onClick={() => this.getAgendamentoId(agendaDois.agendamento_id)} variant="primary">Editar</Button>
+                                            <Button className={styles.buttonsControl} onClick={() => this.deleteAgendamento(agendaDois.agendamento_id)} variant="danger">Deletar</Button>
                                         </td>
                                     </tr>
                                 )
@@ -256,12 +257,12 @@ editAgendamento = (event) => {
                                 <Col xs={5}>
                                     <Form.Label>Horario</Form.Label>
                                     <Form.Control className={styles.formControl} value={this.state.horario} onChange={this.atualizaHorario} type="time" required />
-                                    <p>{this.state.horario}</p>
+
                                 </Col>
                                 <Col xs={6}>
                                     <Form.Label>Data</Form.Label>
                                     <Form.Control className={styles.formControl} value={this.state.date} onChange={this.atualizaData} type="date" required />
-                                    <p>{this.state.date}</p>
+
                                 </Col>
                                 <Col xs={8}>
                                     <Form.Label>Serviço</Form.Label>
@@ -278,7 +279,7 @@ editAgendamento = (event) => {
                                 <Col xs={6}>
                                     <Form.Label>Nome Pet</Form.Label>
                                     <Form.Select className={styles.formControl} onChange={this.atualizaNomePet} >
-                                        <option>this.state</option>
+                                        <option>Selecione o Pet</option>
                                         {
                                             this.state.pet.map((nome) =>
                                                 <option key={nome.nome_pet} value={nome.nome_pet} >{nome.nome_pet}</option>

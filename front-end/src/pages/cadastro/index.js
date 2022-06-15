@@ -113,7 +113,9 @@ export default function Clientes() {
         setBairro("");
         setNumero("");
         setComplemento("");
-        setValidated(false);
+        setValidated(false);    
+        setNomePet("");
+
     }
 
     return (
