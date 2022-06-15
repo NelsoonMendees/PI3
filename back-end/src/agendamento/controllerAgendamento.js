@@ -2,82 +2,67 @@ const pool = require('../../db');
 const queries = require('./queriesAgendamento')
 
 
-
-
 const getAgendamento = (req, res) => {
 
     pool.query(queries.getAgendamento, (error, results) => {
-        res.status(200).json(results.rows);
-
-    })
-}
-
-
-const getAgendamentoById = (req, res) => {
-
-    const agendamento_id = parseInt(req.params.agendamento_id);
-
-    pool.query(queries.getAgendamentoById, [agendamento_id], (error, results) => {
-
         return res.status(200).json(results.rows);
 
+    })
+}
+
+const getAgendamentoByData = (req, res) => {
+
+    const data = req.params.data.toString();
+
+    pool.query(queries.getAgendamentoByData, [data], (error, results) => {
+
+        if (results.rows.length === 0) {
+            return res.status(422).json({ msg: 'não existem agendamentos para essa data ' })
+
+        }
+        else {
+
+            return res.status(200).json(results.rows);
+        }
 
     })
 
 }
-
-
 
 
 const postAgendamento = (req, res) => {
 
-    const { data, horario, servicos_pet, nome_pet } = req.body;
+    const { data, horario, servicos, nome_pet } = req.body;
 
+    pool.query(queries.getIdPetByNomePet, [nome_pet], (error, results) => {
 
-    pool.query(queries.getIdServicoByServico, [servicos_pet], (error, results) => {
+        const pet_id = results.rows[0].pet_id
 
-        const servico_id = results.rows[0].servico_id
+        //return res.status(200).json(pet_id);
 
+        pool.query(queries.addAgendamento, [horario, data, servicos, pet_id], (error, results) => {
 
-        //return res.status(200).json(servico_id);
+            // return res.status(201).json({msg: 'sucesso'})
 
-        pool.query(queries.getIdPetByNomePet, [nome_pet], (error, results) => {
+            pool.query(queries.getMaxAgendamentoId, (error, results) => {
 
-            const pet_id = results.rows[0].pet_id
+                const agendamento_id = results.rows[0].max
+                //return res.status(200).json({msg: 'sucesso'})
 
-            //return res.status(200).json(pet_id);
+                // return res.status(200).json({agendamento_id});
 
-            pool.query(queries.addAgendamento, [horario, data, servico_id, pet_id], (error, results) => {
-                //console.log(error);
-                //  console.log(results);
-                // console.log( '.' + servico_id  + '.');
-                // console.log('.' + pet_id  + '.');
+                pool.query(queries.getAgendamentoById, [agendamento_id], (error, results) => {
 
-                // return res.status(201).json({msg: 'sucesso'})
+                    console.log('sucesso');
 
-                pool.query(queries.getMaxAgendamentoId, (error, results) => {
+                    return res.status(200).json(results.rows);
 
-                    const agendamento_id = results.rows[0].max
-                    //return res.status(200).json({msg: 'sucesso'})
-
-                    // return res.status(200).json({agendamento_id});
-
-                    pool.query(queries.getAgendamentoById, [agendamento_id], (error, results) => {
-
-
-                        console.log('sucesso');
-
-                        return res.status(200).json(results.rows);
-
-                    })
                 })
-
             })
 
         })
 
     })
-
 }
 
 
@@ -97,35 +82,26 @@ const deleteAgendamento = (req, res) => {
 
 const updateAgendamento = (req, res) => {
 
-    const agendamento_id = (req.params.agendamento_id);
-    const { horario, data, servicos_pet, nome_pet } = req.body;
-
-    pool.query(queries.getIdServicoByServico, [servicos_pet], (error, results) => {
-
-        const servico_id = results.rows[0].servico_id
-
-        //return res.status(200).json(servico_id);
-
-        pool.query(queries.getIdPetByNomePet, [nome_pet], (error, results) => {
-
-            const pet_id = results.rows[0].pet_id
-            //return res.status(200).json(pet_id);
+    const agendamento_id = parseInt(req.params.agendamento_id);
+    const { horario, data, servicos, nome_pet } = req.body;
 
 
-            pool.query(queries.updateAgendamento, [horario, data, servico_id, pet_id, agendamento_id], (error, results) => {
 
-                // return res.status(200).json(agendamento_id);
+    pool.query(queries.getIdPetByNomePet, [nome_pet], (error, results) => {
 
-                return res.status(200).send("Agendamento atualizado com sucesso!");
+        const pet_id = results.rows[0].pet_id
+        //return res.status(200).json(pet_id);
 
-            })
+        pool.query(queries.updateAgendamento, [horario, data, servicos, pet_id, agendamento_id], (error, results) => {
+
+            // return res.status(200).json(agendamento_id);
+
+            return res.status(200).send("Agendamento atualizado com sucesso!");
 
         })
-
     })
 
 }
-
 
 
 module.exports = {
@@ -133,5 +109,5 @@ module.exports = {
     getAgendamento,
     deleteAgendamento,
     updateAgendamento,
-    getAgendamentoById,
+    getAgendamentoByData,
 }

@@ -3,7 +3,7 @@ import { Header } from '../../components/Header'
 import Link from 'next/link'
 import React, { useState } from 'react';
 import styles from './styles.module.css';
-import { Form, Row, Col, Button} from 'react-bootstrap';
+import { Form, Row, Col, Button } from 'react-bootstrap';
 import { mask, unMask } from "remask";
 import api from '../../services/api';
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,7 +22,10 @@ export default function Clientes() {
     const [bairro, setBairro] = useState("");
     const [rua, setRua] = useState("");
     const [complemento, setComplemento] = useState("");
+    const [racaPet, setRacaPet] = useState({});
+    const [nomePet, setNomePet] = useState("");
     const [validated, setValidated] = useState(false);
+    const [raca, setRaca] = useState([]);
 
     const onChangeCpf = eve => {
         const originalCpf = unMask(eve.target.value);
@@ -48,8 +51,7 @@ export default function Clientes() {
         setCep(maskedValue);
     };
 
-    function cadastrarCliente(ev) {
-        ev.preventDefault();
+    function cadastroClientePet() {
         const data = {
             cpf: cpf.replace(/[^0-9]/g, ''),
             telefone: tel.replace(/[^0-9]/g, ''),
@@ -61,7 +63,9 @@ export default function Clientes() {
             numero: numero,
             bairro: bairro,
             rua: rua,
-            complemento: complemento
+            complemento: complemento,
+            raca_pet: racaPet,
+            nome_pet: nomePet
         }
 
         if (cpf === "" || nome === "" || tel === "" || cep === "") {
@@ -69,15 +73,23 @@ export default function Clientes() {
             return;
         }
 
-        api.post('/api/v1/cliente', data)
+        api.post('/api/v1/pet', data)
             .then(response => {
                 toast.success('Cliente cadastrado com sucesso!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
             }).catch(err => {
                 toast.error('Não foi possivel cadastrar o cliente!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
-                console.log(data)
             })
+    }
+
+    function cadastrarCliente(ev) {
+        ev.preventDefault();
+        cadastroClientePet();
 
     };
+
+    api.get('/api/v1/raca').then(response => {
+        setRaca(response.data)
+    })
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
@@ -122,7 +134,7 @@ export default function Clientes() {
                         </Col>
                         <Col xs={5}>
                             <label>CPF</label>
-                            <Form.Control type="text" className={styles.inputForm}  name="cpf" onChange={onChangeCpf} value={cpf} placeholder="CPF" required />
+                            <Form.Control type="text" className={styles.inputForm} name="cpf" onChange={onChangeCpf} value={cpf} placeholder="CPF" required />
                             <Form.Control.Feedback type="invalid">Informe o CPF</Form.Control.Feedback>
                         </Col>
                     </Row>
@@ -143,6 +155,7 @@ export default function Clientes() {
                         <Col xs={6}>
                             <label>CEP</label>
                             <Form.Control className={styles.inputForm} type="text" name="cep" onChange={onChangeCep} value={cep} placeholder="CEP" required />
+                            <Form.Control.Feedback type="invalid">Informe o CEP</Form.Control.Feedback>
                         </Col>
                         <Col xs={3}>
                             <label>Estado</label>
@@ -157,11 +170,13 @@ export default function Clientes() {
                     <Row className={styles.formInput}>
                         <Col xs={5}>
                             <label>Rua</label>
-                            <Form.Control className={styles.inputForm} value={rua} onChange={(ev) => setRua(ev.target.value)} name="rua" type="text" placeholder="Rua" />
+                            <Form.Control className={styles.inputForm} value={rua} onChange={(ev) => setRua(ev.target.value)} name="rua" type="text" placeholder="Rua" required />
+                            <Form.Control.Feedback type="invalid">Informe a Rua</Form.Control.Feedback>
                         </Col>
                         <Col xs={4}>
                             <label>Bairro</label>
-                            <Form.Control className={styles.inputForm} value={bairro} onChange={(ev) => setBairro(ev.target.value)} name="bairro" type="text" placeholder="Bairro" />
+                            <Form.Control className={styles.inputForm} value={bairro} onChange={(ev) => setBairro(ev.target.value)} name="bairro" type="text" placeholder="Bairro" required />
+                            <Form.Control.Feedback type="invalid">Informe o Bairro</Form.Control.Feedback>
                         </Col>
                         <Col xs={3}>
                             <label>Numero</label>
@@ -170,9 +185,27 @@ export default function Clientes() {
                     </Row>
 
                     <Row className={styles.formInput}>
-                        <Col xs={12}>
+                        <Col xs={5}>
                             <label>Complemento</label>
                             <Form.Control className={styles.inputForm} value={complemento} onChange={(ev) => setComplemento(ev.target.value)} name="complemento" type="text" placeholder="Complemento" />
+                        </Col>
+
+                        <Col xs={4}>
+                            <label>Nome Pet</label>
+                            <Form.Control className={styles.inputForm} value={nomePet} onChange={(ev) => setNomePet(ev.target.value)} name="rua" type="text" placeholder="Nome do Pet" />
+                        </Col>
+
+                        <Col xs={3}>
+                            <label>Raça</label>
+                            <Form.Select className={styles.inputForm} onChange={(ev) => setRacaPet(ev.target.value)} >
+                                <option>Selecione a Raça</option>
+                                {
+                                    raca.map(raca => (
+                                        <option key={raca.raca_id} value={raca.raca_pet} >{raca.raca_pet}</option>
+                                    )
+                                    )
+                                }
+                            </Form.Select>
                         </Col>
                     </Row>
 

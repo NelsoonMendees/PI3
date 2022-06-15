@@ -5,6 +5,7 @@ import { Header } from '../../components/Header'
 import styles from './styles.module.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import api from '../../services/api'
 
 export default class Clientes extends React.Component {
@@ -24,7 +25,10 @@ export default class Clientes extends React.Component {
             email: "",
             complemento: "",
             id_cliente: "",
+            raca_pet: "",
+            nome_pet: "",
             clientes: [],
+            raca: [],
             modalAberto: false,
             valite: false
         }
@@ -32,11 +36,18 @@ export default class Clientes extends React.Component {
 
     componentDidMount() {
         this.getCliente();
+        this.getRaca();
     }
 
     getCliente = () => {
         api.get('/api/v1/Cliente').then(({ data }) => {
             this.setState({ clientes: data });
+        })
+    }
+
+    getRaca = () => {
+        api.get('/api/v1/raca').then(({ data }) => {
+            this.setState({ raca: data });
         })
     }
 
@@ -67,6 +78,9 @@ export default class Clientes extends React.Component {
                     email: cliente.email,
                     complemento: cliente.complemento,
                     id_cliente: cliente.id_cliente,
+                    nome_pet: cliente.nome_pet,
+                    raca_pet: cliente.raca_pet,
+                    pet_id: cliente.pet_id,
                     modalAberto: true
 
                 })
@@ -85,9 +99,11 @@ export default class Clientes extends React.Component {
     atualizaEstado = (e) => { this.setState({ estado: e.target.value }) }
     atualizaEmail = (e) => { this.setState({ email: e.target.value }) }
     atualizaComplemento = (e) => { this.setState({ complemento: e.target.value }) }
+    atualizaNomePet = (e) => { this.setState({ nome_pet: e.target.value }) }
+    atualizaRacaPet = (e) => { this.setState({ raca_pet: e.target.value }) }
 
 
-    editarCliente = (ev) => {
+    editarCliente = (event) => {
         const body = {
             cpf: this.state.cpf,
             telefone: this.state.telefone,
@@ -100,11 +116,14 @@ export default class Clientes extends React.Component {
             estado: this.state.estado,
             email: this.state.email,
             complemento: this.state.complemento,
-            id_cliente: this.state.id_cliente
+            raca_pet: this.state.raca_pet,
+            nome_pet: this.state.nome_pet,
+            id_cliente: this.state.id_cliente,
         }
 
         api.put('/api/v1/cliente/' + this.state.cpf, body).then(response => {
             toast.success('Cliente Alterado com Suscesso!!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
+            this.getCliente();
         }).catch(err => {
             toast.error('Não foi possivel cadastrar o cliente!', { position: toast.POSITION.TOP_RIGHT, autoClose: 2000 })
 
@@ -185,6 +204,21 @@ export default class Clientes extends React.Component {
                                     <Col xs={5}>
                                         <Form.Label>Bairro</Form.Label>
                                         <Form.Control className={styles.formControl} placeholder="Bairro" type="text" value={this.state.bairro} onChange={this.atualizaBairro} />
+                                    </Col>
+                                    <Col xs={5}>
+                                        <Form.Label>Nome Pet</Form.Label>
+                                        <Form.Control className={styles.formControl} placeholder="Nome Pet" type="text" value={this.state.nome_pet} onChange={this.atualizaNomePet} />
+                                    </Col>
+                                    <Col xs={6}>
+                                        <Form.Label>Raça</Form.Label>
+                                        <Form.Select className={styles.inputForm} onChange={this.atualizaRacaPet} >
+                                            <option>{this.state.raca_pet}</option>
+                                            {
+                                                this.state.raca.map((raca) =>
+                                                    <option key={raca.raca_id} value={raca.raca_pet} >{raca.raca_pet}</option>
+                                                )
+                                            }
+                                        </Form.Select>
                                     </Col>
                                 </Row>
                                 <Row className={styles.btnControl}>

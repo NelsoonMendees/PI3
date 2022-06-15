@@ -7,9 +7,5 @@ const router = Router();
 router.get("/",  controller.getPet);
 router.get("/:cpf", controller.getPetByCliente);
 router.post("/", controller.addClienteEPet);
-//router.put("/:cpf", controller.updateCliente);
-//router.delete("/:cpf",controller.removeCliente);
-
-
 
 module.exports = router;

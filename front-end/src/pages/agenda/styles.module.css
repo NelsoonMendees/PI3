@@ -1,0 +1,68 @@
+.title{
+    margin-top: 10px;
+    text-align: center;
+    color: var(--gold-900)
+}
+
+.tabela{
+    max-width: 80vw;
+    margin: 2vw 8vw;
+}
+
+.tabela tr{
+    max-width: 80vw;
+    text-align: center;
+    color: #f0ffffde;
+}
+
+.tabela td{
+    max-width: 80vw;
+    color: #f0ffffde;
+}
+
+.tabela th{
+    max-width: 50vw;
+}
+
+.buttonsControl{
+    margin-left: 1rem;
+}
+
+.buttonsControl button{
+    width: 80px;
+}
+
+.btnControl{
+    display: grid;
+    justify-content: flex-end;
+    margin-left: 1rem;
+}
+
+.btn{
+
+    width:150px;
+    margin-left: 1rem;
+    margin-bottom: 10px;
+}
+
+.formData{
+    max-width: 80vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.dateControl{
+    margin-top: 1.5rem;
+}
+
+.formControl{
+    margin: 10px 10px;
+}
+
+@media only screen and (max-width: 737px) {
+    .buttonsControl{
+        margin-bottom: 1rem;
+    }
+}

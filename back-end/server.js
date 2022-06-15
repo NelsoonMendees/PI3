@@ -6,7 +6,11 @@ const cors = require('cors');
 const ClienteRoutes = require('./src/cliente/routes');
 const LoginRoutes = require('./src/login/routes');
 const PetRoutes = require('./src/pet/routes');
-const AgendamentoRoutes = require('./src/agendamento/routes')
+const AgendamentoRoutes = require('./src/agendamento/routes');
+const RacasPetRoutes = require('./src/racasPet/routes');
+const ServicosPetRoutes = require('./src/servicosPet/routes');
+const NomesPetRoutes = require('./src/nomePet/routes')
+const IdAgendamentoRoutes = require('./src/idAgendamento/routes')
 
 const app = express();
 app.use((req, res, next) => {
@@ -33,8 +37,10 @@ app.use('/api/v1/cliente', ClienteRoutes);
 app.use('/api/v1/login', LoginRoutes);
 app.use('/api/v1/pet', PetRoutes);
 app.use('/api/v1/agendamento', AgendamentoRoutes);
-
-
+app.use('/api/v1/raca', RacasPetRoutes);
+app.use('/api/v1/servicos', ServicosPetRoutes);
+app.use('/api/v1/nome', NomesPetRoutes);
+app.use('/api/v1/id', IdAgendamentoRoutes);
 
 
 

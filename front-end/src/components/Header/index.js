@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-import {useState} from 'react'
+import { useState } from 'react'
 
 import Link from 'next/link'
 
@@ -7,16 +7,16 @@ import Link from 'next/link'
 export function Header() {
 
     const [isOpen, setIsOpen] = useState(false);
-    const openMenu = ()=> setIsOpen(!isOpen)
+    const openMenu = () => setIsOpen(!isOpen)
 
     return (
         <header className={styles.header}>
             <nav className={styles.navbar}>
 
                 <Link href="/agenda">
-                    <a className={styles.navlogo}>Pet Shop<br />Manager</a>
+                    <a className={styles.navlogo}>Pet Shop Manager</a>
                 </Link>
-                <ul className={isOpen === false ? styles.navmenu : styles.navmenu +' '+ styles.active}>
+                <ul className={isOpen === false ? styles.navmenu : styles.navmenu + ' ' + styles.active}>
 
                     <li className={styles.navitem}>
                         <Link href="/agenda">
@@ -39,6 +39,13 @@ export function Header() {
                         </Link>
 
                     </li>
+                    <li className={styles.navitem}>
+
+                        <Link href="/dashboard">
+                            Dashboard
+                        </Link>
+
+                    </li>
 
                     <li className={styles.logout}>
 
@@ -48,8 +55,8 @@ export function Header() {
 
                     </li>
                 </ul>
-                <button className={ isOpen === false ? styles.hamburger : styles.hamburger + ' ' + styles.active}
-                onClick={openMenu}
+                <button className={isOpen === false ? styles.hamburger : styles.hamburger + ' ' + styles.active}
+                    onClick={openMenu}
                 >
                     <span className={styles.bar}></span>
                     <span className={styles.bar}></span>
